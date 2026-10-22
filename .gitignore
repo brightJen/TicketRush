@@ -1,0 +1,23 @@
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Maven build output
+**/target/
+
+# Logs and JVM diagnostics
+*.log
+*.hprof
+hs_err_pid*
+replay_pid*
+
+# Local IDE metadata
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Operating-system files
+.DS_Store
+Thumbs.db
