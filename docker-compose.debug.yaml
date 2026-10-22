@@ -1,0 +1,68 @@
+services:
+  db:
+    image: postgres:16
+    env_file: .env.development
+    container_name: cinema-db
+    restart: unless-stopped
+    command: ["postgres", "-c", "port=${DB_CONTAINER_PORT}"]
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      #TZ: ${TZ}
+    ports:
+      - "${DB_HOST_PORT}:${DB_CONTAINER_PORT}" # 5434 -> 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -p ${DB_CONTAINER_PORT} -U ${DB_USER} -d ${DB_NAME}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - cinema-net
+
+  backend:
+    env_file: .env.development
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: cinema-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SERVER_PORT: ${APP_CONTAINER_PORT}
+      APP_NAME: ${APP_NAME}
+      #TZ: ${TZ}
+      # Inside the Docker network, use the service name and the CONTAINER port
+      DB_HOST: db
+      DB_PORT: ${DB_CONTAINER_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      #CORS_ORIGINS: ${CORS_ORIGINS}
+      #BOOKING_EXPIRE_MINUTES: ${BOOKING_EXPIRE_MINUTES}
+      #MAX_SEATS_PER_BOOKING: ${MAX_SEATS_PER_BOOKING}
+      #CURRENCY: ${CURRENCY}
+      #LOG_LEVEL: ${LOG_LEVEL}
+      # Remote debug (JDWP)
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
+    ports:
+      - "${APP_HOST_PORT}:${APP_CONTAINER_PORT}" # 8000 -> 8001
+      - "${DEBUG_PORT}:${DEBUG_PORT}" # 5005 -> 5005
+    networks:
+      - cinema-net
+
+volumes:
+  pgdata:
+
+networks:
+  cinema-net:
+    driver: bridge
