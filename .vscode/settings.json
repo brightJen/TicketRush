@@ -1,0 +1,22 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.debug.settings.onBuildFailureProceed": true,
+  "java.jdt.ls.vmargs": "-Xmx1G",
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/target": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "files.watcherExclude": {
+    "**/target/**": true
+  },
+  "files.associations": {
+    "*.env*": "properties"
+  },
+ 
+  "docker.commands.composeUp": "docker compose up -d --build"
+}

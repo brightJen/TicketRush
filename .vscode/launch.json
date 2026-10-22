@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Attach to Docker (backend)",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "projectName": "cinema-booking",
+      "preLaunchTask": "wait for backend"
+    },
+    {
+      "type": "java",
+      "name": "Attach (containers already running)",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005
+    }
+  ]
+}
