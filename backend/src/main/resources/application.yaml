@@ -12,7 +12,7 @@ spring:
     #   maximum-pool-size: 10
   jpa:
     hibernate:
-      ddl-auto: update        # use "validate" + Flyway/Liquibase in production
+      ddl-auto: validate        # use "validate" + Flyway/Liquibase in production
     open-in-view: false
     properties:
       hibernate:
@@ -20,6 +20,9 @@ spring:
           #time_zone: UTC
         #format_sql: true
     show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
   jackson:
     time-zone: ${TZ:Asia/Ho_Chi_Minh}
 
