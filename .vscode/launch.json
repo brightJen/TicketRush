@@ -7,7 +7,7 @@
       "request": "attach",
       "hostName": "localhost",
       "port": 5005,
-      "projectName": "cinema-booking",
+      "projectName": "backend",
       "preLaunchTask": "wait for backend"
     },
     {
